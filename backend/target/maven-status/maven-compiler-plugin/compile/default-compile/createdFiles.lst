@@ -3,9 +3,11 @@ com/attendancetracker/controller/CompanyController.class
 com/attendancetracker/controller/SubscriptionController.class
 com/attendancetracker/model/SuperAdmin.class
 com/attendancetracker/service/SubscriptionService.class
+com/attendancetracker/dto/AttendanceStatusResponse.class
 com/attendancetracker/model/Location.class
 com/attendancetracker/dto/LoginRequest.class
 com/attendancetracker/model/PcAgent.class
+com/attendancetracker/controller/AttendanceController.class
 com/attendancetracker/dto/RegisterRequest.class
 com/attendancetracker/dto/UserDto.class
 com/attendancetracker/repository/LocationRepository.class
@@ -21,11 +23,15 @@ com/attendancetracker/dto/CompanyCreateRequest.class
 com/attendancetracker/security/JwtAuthenticationFilter.class
 com/attendancetracker/dto/OtpRequest.class
 com/attendancetracker/model/Employee.class
+com/attendancetracker/dto/AttendanceRequest.class
 com/attendancetracker/config/WebSocketConfig.class
 com/attendancetracker/service/RazorpayService.class
 com/attendancetracker/service/CompanyService.class
+com/attendancetracker/controller/ConfigController.class
 com/attendancetracker/controller/AuthController.class
 com/attendancetracker/repository/AttendanceRepository.class
+com/attendancetracker/dto/EmployeeDTO.class
+com/attendancetracker/dto/LocationDTO.class
 com/attendancetracker/config/SecurityConfig.class
 com/attendancetracker/service/AgentService.class
 com/attendancetracker/dto/AuthResponse.class
@@ -37,4 +43,6 @@ com/attendancetracker/service/CompanyAdminService.class
 com/attendancetracker/dto/HeartbeatRequest.class
 com/attendancetracker/repository/SuperAdminRepository.class
 com/attendancetracker/controller/CompanyAdminController.class
+com/attendancetracker/controller/LocationController.class
 com/attendancetracker/service/GoogleMapsService.class
+com/attendancetracker/service/AttendanceService.class
