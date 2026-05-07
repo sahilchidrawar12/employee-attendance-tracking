@@ -273,6 +273,171 @@ pc-agent/
 
 ---
 
+## Installation and Auto-Start Setup
+
+The PC Agent can be installed as a system service that automatically starts when your computer boots, requiring no manual intervention after initial setup.
+
+### Prerequisites
+- **Python 3.7+** installed on your system
+- **Administrator/root privileges** for system service installation
+- **Internet connection** for initial setup and backend communication
+
+### Platform-Specific Installation
+
+#### macOS Installation
+```bash
+cd pc-agent
+chmod +x install_macos.sh
+./install_macos.sh
+```
+
+**What it does:**
+- Creates Python virtual environment
+- Installs all dependencies
+- Sets up Launch Agent for auto-start
+- Configures logging to `~/Library/Logs/pc-agent/`
+- Starts the service immediately
+
+**Management:**
+```bash
+# Check status
+launchctl list | grep pc-agent
+
+# View logs
+tail -f ~/Library/Logs/pc-agent/agent.log
+
+# Stop service
+launchctl unload ~/Library/LaunchAgents/com.attendancetracker.pcagent.plist
+
+# Start service
+launchctl load ~/Library/LaunchAgents/com.attendancetracker.pcagent.plist
+
+# Uninstall
+./uninstall_macos.sh
+```
+
+#### Windows Installation
+```batch
+cd pc-agent
+install_windows.bat
+```
+
+**What it does:**
+- Downloads and installs NSSM (Non-Sucking Service Manager)
+- Creates Python virtual environment
+- Installs all dependencies
+- Registers PC Agent as Windows service
+- Configures auto-start on boot
+- Sets up logging to `%LOCALAPPDATA%\pc-agent\logs\`
+
+**Management:**
+```batch
+# Check status
+sc query pc-agent
+
+# View logs
+type %LOCALAPPDATA%\pc-agent\logs\agent.log
+
+# Stop service
+net stop pc-agent
+
+# Start service
+net start pc-agent
+
+# Uninstall
+uninstall_windows.bat
+```
+
+#### Linux Installation
+```bash
+cd pc-agent
+chmod +x install_linux.sh
+./install_linux.sh
+```
+
+**What it does:**
+- Creates Python virtual environment
+- Installs all dependencies
+- Sets up systemd service for auto-start
+- Configures logging to `~/.local/share/pc-agent/logs/`
+- Starts the service immediately
+
+**Management:**
+```bash
+# Check status (system service)
+sudo systemctl status pc-agent
+
+# Or for user service (no sudo)
+systemctl --user status pc-agent
+
+# View logs (system service)
+sudo journalctl -u pc-agent -f
+
+# Or for user service
+journalctl --user -u pc-agent -f
+
+# Stop service
+sudo systemctl stop pc-agent
+# or
+systemctl --user stop pc-agent
+
+# Start service
+sudo systemctl start pc-agent
+# or
+systemctl --user start pc-agent
+
+# Uninstall
+./uninstall.sh
+```
+
+### Configuration After Installation
+
+After installation, you can configure the agent by editing the `.env` file in the pc-agent directory:
+
+```bash
+# Edit configuration
+nano pc-agent/.env
+
+# Restart service to apply changes
+# macOS
+launchctl unload ~/Library/LaunchAgents/com.attendancetracker.pcagent.plist
+launchctl load ~/Library/LaunchAgents/com.attendancetracker.pcagent.plist
+
+# Windows
+net stop pc-agent
+net start pc-agent
+
+# Linux
+sudo systemctl restart pc-agent
+# or
+systemctl --user restart pc-agent
+```
+
+### Troubleshooting Installation
+
+#### Service Won't Start
+1. Check logs for error messages
+2. Verify Python virtual environment is created: `ls pc-agent/venv/`
+3. Test manual execution: `pc-agent/venv/bin/python3 pc-agent/src/main.py`
+4. Check dependencies: `pc-agent/venv/bin/pip list`
+
+#### Permission Issues
+- **macOS**: Ensure the Launch Agent plist has correct permissions
+- **Windows**: Run installation as Administrator
+- **Linux**: Use `sudo` for system service, or install as user service
+
+#### Network Issues
+- Verify backend URL in `.env` is accessible
+- Check firewall settings allow outbound connections
+- Ensure DNS resolution works for backend domain
+
+#### Auto-Start Not Working
+- **macOS**: Check `~/Library/LaunchAgents/` for plist file
+- **Windows**: Verify service is set to Automatic start: `sc config pc-agent start= auto`
+- **Linux**: Check service is enabled: `systemctl is-enabled pc-agent`
+
+---
+
 ## Quick Start
 
 ### 1. Setup Environment
