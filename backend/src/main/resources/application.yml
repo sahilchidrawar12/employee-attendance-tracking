@@ -1,0 +1,68 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:attendance_tracker}
+    username: ${DB_USERNAME:attendance_user}
+    password: ${DB_PASSWORD:secure_password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+
+jwt:
+  secret: ${JWT_SECRET:change-this-secret}
+  expiration: ${JWT_EXPIRATION_MS:86400000}
+
+websocket:
+  port: ${WS_PORT:8081}
+  allowed-origins: ${WS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:3001}
+
+google:
+  maps-api-key: ${GOOGLE_MAPS_API_KEY:}
+
+razorpay:
+  key-id: ${RAZORPAY_KEY_ID:}
+  key-secret: ${RAZORPAY_KEY_SECRET:}
+
+app:
+  name: ${APP_NAME:Employee Attendance Tracker}
+  version: ${APP_VERSION:1.0.0}
+  url: ${APP_URL:http://localhost:8080}
+  ws:
+    url: ${WS_URL:ws://localhost:8080/ws}
+  frontend-url: ${FRONTEND_URL:http://localhost:3000}
+  company-admin-url: ${COMPANY_ADMIN_URL:http://localhost:3001}
+  timezone: ${APP_TIMEZONE:UTC}
+  location-update-interval: ${LOCATION_UPDATE_INTERVAL:30000}
+  zone-check-interval: ${ZONE_CHECK_INTERVAL:10000}
+
+file:
+  upload-path: ${UPLOAD_PATH:/tmp/uploads}
+  max-size: ${MAX_FILE_SIZE:10MB}
+
+security:
+  bcrypt-strength: ${BCRYPT_STRENGTH:12}
+  cors-allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:3001}

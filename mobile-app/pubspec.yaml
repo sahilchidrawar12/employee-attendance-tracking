@@ -1,0 +1,51 @@
+name: employee_attendance_mobile
+description: Employee Attendance & Productivity Tracking
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Core dependencies
+  cupertino_icons: ^1.0.5
+  http: ^1.4.0
+  intl: ^0.18.1
+
+  # Google Maps
+  google_maps_flutter: ^2.5.3
+
+  # Location services
+  geolocator: ^11.0.0
+  geocoding: ^3.0.0
+
+  # WebSocket
+  web_socket_channel: ^2.4.0
+
+  # State management
+  provider: ^6.1.1
+
+  # Storage
+  shared_preferences: ^2.2.2
+
+  # Image handling
+  image_picker: ^1.0.7
+
+  # Notifications
+  flutter_local_notifications: ^17.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+
+flutter:
+  uses-material-design: true
+
+  # Add Google Maps assets
+  assets:
+    - assets/images/
+    - assets/icons/
