@@ -89,7 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _startLocationTracking() {
-    _locationTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
+    final updateIntervalMs = _configService.getLocationUpdateIntervalMs();
+    _locationTimer = Timer.periodic(Duration(milliseconds: updateIntervalMs), (timer) async {
       if (_checkedIn && _currentPosition != null && _webSocketService.isConnected) {
         _webSocketService.sendLocationUpdate(
           _employeeId ?? '',

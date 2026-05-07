@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ConfigService {
   static const String _configCacheKey = 'app_config';
@@ -21,6 +22,9 @@ class ConfigService {
   ConfigService._internal();
 
   Future<void> initialize() async {
+    // Load environment variables
+    await dotenv.load(fileName: '.env');
+
     _prefs = await SharedPreferences.getInstance();
     await _loadConfig();
   }
@@ -55,7 +59,7 @@ class ConfigService {
 
   // API URLs
   Future<String> getApiBaseUrl() async {
-    return _prefs.getString(_apiBaseUrlKey) ?? 'http://localhost:8080/api';
+    return _prefs.getString(_apiBaseUrlKey) ?? dotenv.get('API_BASE_URL', fallback: 'http://localhost:8080/api');
   }
 
   Future<void> setApiBaseUrl(String url) async {
@@ -63,7 +67,7 @@ class ConfigService {
   }
 
   Future<String> getWsBaseUrl() async {
-    return _prefs.getString(_wsBaseUrlKey) ?? 'ws://localhost:8080/ws';
+    return _prefs.getString(_wsBaseUrlKey) ?? dotenv.get('WS_BASE_URL', fallback: 'ws://localhost:8080/ws');
   }
 
   Future<void> setWsBaseUrl(String url) async {
@@ -117,6 +121,60 @@ class ConfigService {
       config = config?[part];
     }
     return config ?? true;
+  }
+
+  // Environment-based Configuration
+  String getGoogleMapsApiKey() {
+    return dotenv.get('GOOGLE_MAPS_API_KEY', fallback: 'your_google_maps_api_key_here');
+  }
+
+  String getAppName() {
+    return dotenv.get('APP_NAME', fallback: 'Employee Attendance Tracker');
+  }
+
+  String getAppVersion() {
+    return dotenv.get('APP_VERSION', fallback: '1.0.0');
+  }
+
+  String getLocationAccuracy() {
+    return dotenv.get('LOCATION_ACCURACY', fallback: 'high');
+  }
+
+  int getLocationUpdateIntervalMs() {
+    return int.tryParse(dotenv.get('LOCATION_UPDATE_INTERVAL_MS', fallback: '30000')) ?? 30000;
+  }
+
+  int getZoneCheckIntervalMs() {
+    return int.tryParse(dotenv.get('ZONE_CHECK_INTERVAL_MS', fallback: '10000')) ?? 10000;
+  }
+
+  String getJwtSecret() {
+    return dotenv.get('JWT_SECRET', fallback: 'your_jwt_secret_key_here_change_in_production');
+  }
+
+  int getMaxFileSize() {
+    return int.tryParse(dotenv.get('MAX_FILE_SIZE', fallback: '10485760')) ?? 10485760;
+  }
+
+  List<String> getAllowedFileTypes() {
+    final types = dotenv.get('ALLOWED_FILE_TYPES', fallback: 'jpg,jpeg,png');
+    return types.split(',');
+  }
+
+  int getWsReconnectInterval() {
+    return int.tryParse(dotenv.get('WS_RECONNECT_INTERVAL', fallback: '5000')) ?? 5000;
+  }
+
+  int getWsMaxRetries() {
+    return int.tryParse(dotenv.get('WS_MAX_RETRIES', fallback: '5')) ?? 5;
+  }
+
+  String getKeystoreName() {
+    return dotenv.get('KEYSTORE_NAME', fallback: 'attendance_tracker_keystore');
+  }
+
+  String getKeystoreEncryptionKey() {
+    return dotenv.get('KEYSTORE_ENCRYPTION_KEY', fallback: 'your_secure_key');
   }
 
   // Logout

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:employee_attendance_mobile/screens/splash_screen.dart';
+import 'package:employee_attendance_mobile/services/config_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize configuration service
+  final configService = ConfigService();
+  await configService.initialize();
+
   runApp(const AttendanceApp());
 }
 
