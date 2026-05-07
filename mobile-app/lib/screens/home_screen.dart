@@ -182,17 +182,18 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     if (matchedZone != null) {
+      final zoneName = matchedZone.name;
       if (shortestDistance <= matchedZone.radius) {
         setState(() {
           _zoneStatus = 'In zone';
-          _currentZone = matchedZone.name;
+          _currentZone = zoneName;
         });
         return;
       }
       if (shortestDistance <= matchedZone.radius * 2) {
         setState(() {
           _zoneStatus = 'Nearby';
-          _currentZone = matchedZone.name;
+          _currentZone = zoneName;
         });
         return;
       }
@@ -337,6 +338,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final date = DateFormat('EEEE, d MMMM').format(DateTime.now());
     final checkInText = _clockInTime != null ? DateFormat('hh:mm a').format(_clockInTime!) : '--:-- --';
+    final checkOutText = _clockOutTime != null ? DateFormat('hh:mm a').format(_clockOutTime!) : '--:-- --';
     final hours = _getElapsedTime();
 
     return Scaffold(
@@ -384,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               _zoneStatus,
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.8),
+                                color: Colors.white.withAlpha(204),
                                 fontSize: 14,
                               ),
                             ),
@@ -393,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: _checkedIn ? Colors.green.withOpacity(0.2) : Colors.white.withOpacity(0.2),
+                            color: _checkedIn ? Colors.green.withAlpha(51) : Colors.white.withAlpha(51),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -440,7 +442,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 2)),
+                    BoxShadow(color: Colors.black.withAlpha(13), blurRadius: 10, offset: const Offset(0, 2)),
                   ],
                 ),
                 child: Column(
@@ -463,8 +465,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _summaryItem('Zone', _currentZone),
-                        _summaryItem('Status', _zoneStatus),
+                        _summaryItem('Check-out', checkOutText),
                       ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Status: $_zoneStatus',
+                      style: const TextStyle(fontSize: 14, color: Color(0xFF64748B)),
                     ),
                   ],
                 ),
@@ -482,7 +489,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Icon(Icons.warning, color: Colors.orange.shade600),
                       const SizedBox(width: 12),
-                      const Expanded(
+                      Expanded(
                         child: Text(
                           'You are outside approved zones. Request location approval if needed.',
                           style: TextStyle(color: Colors.orange.shade800, fontSize: 14),
@@ -515,64 +522,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-                    Text('Current zone', style: TextStyle(color: Colors.white70)),
-                    SizedBox(height: 8),
-                    Text('IN ZONE — Pune Head Office', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              Container(
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), boxShadow: const [BoxShadow(color: Color(0x14000000), blurRadius: 20, offset: Offset(0, 8))]),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Today\'s Attendance', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-                    const SizedBox(height: 16),
-                    Text('Punch In: $checkInText ✅', style: const TextStyle(fontSize: 16)),
-                    const SizedBox(height: 8),
-                    Text('Punch Out: ${_checkedIn ? '-- : --' : DateFormat('hh:mm a').format(DateTime.now())}', style: const TextStyle(fontSize: 16)),
-                    const SizedBox(height: 8),
-                    Text('Hours Today: $hours', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: _togglePunch,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _buttonColor,
-                        minimumSize: const Size.fromHeight(56),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      ),
-                      child: Text(_buttonLabel),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              Container(
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), boxShadow: const [BoxShadow(color: Color(0x14000000), blurRadius: 20, offset: Offset(0, 8))]),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(_statusLabel, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF0F172A))),
-                    const SizedBox(height: 12),
-                    const Text('Pune Head Office', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 8),
-                    const Text('Distance from center: 23m', style: TextStyle(color: Color(0xFF64748B))),
-                    const SizedBox(height: 16),
-                    Container(
-                      height: 120,
-                      decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(20)),
-                      child: const Center(child: Text('Zone map placeholder', style: TextStyle(color: Color(0xFF94A3B8)))),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+
