@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class ActivityTracker:
@@ -29,5 +29,5 @@ class ActivityTracker:
             'active_minutes': self.active_seconds // 60,
             'idle_minutes': self.idle_seconds // 60,
             'is_idle': self.is_idle,
-            'last_activity_at': datetime.utcnow().isoformat() + 'Z'
+            'last_activity_at': datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
         }

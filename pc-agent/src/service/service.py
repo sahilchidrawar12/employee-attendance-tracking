@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timezone
 from cryptography.fernet import Fernet
 
 DB_PATH = os.environ.get('PC_AGENT_DB', 'agent_data.db')
@@ -60,7 +60,7 @@ def insert_activity_summary(session_start, session_end, active_minutes, idle_min
     cursor = conn.cursor()
     cursor.execute(
         "INSERT INTO pc_activity (id, session_start, session_end, active_minutes, idle_minutes, synced, created_at) VALUES (?, ?, ?, ?, ?, 0, ?)",
-        (str(datetime.utcnow().timestamp()), session_start, session_end, active_minutes, idle_minutes, datetime.utcnow().isoformat() + 'Z')
+        (str(datetime.now(timezone.utc).timestamp()), session_start, session_end, active_minutes, idle_minutes, datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'))
     )
     conn.commit()
     conn.close()
