@@ -128,10 +128,10 @@ public class AuthController {
                 "email", employee.getEmail(),
                 "firstName", employee.getFirstName(),
                 "lastName", employee.getLastName(),
-                "companyId", employee.getCompanyId() != null ? employee.getCompanyId().toString() : null,
-                "designation", employee.getDesignation() != null ? employee.getDesignation() : "",
-                "department", employee.getDepartment() != null ? employee.getDepartment() : "",
-                "active", employee.isActive()
+                "phone", employee.getPhone(),
+                "role", employee.getRole(),
+                "status", employee.getStatus(),
+                "companyId", employee.getCompanyId() != null ? employee.getCompanyId().toString() : null
             )));
         } catch (Exception e) {
             return ResponseEntity.status(400).body(Map.of("success", false, "error", Map.of("message", e.getMessage())));
